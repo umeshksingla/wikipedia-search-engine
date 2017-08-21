@@ -15,9 +15,17 @@ import xml.sax
 def parser(xmlFile):
 	"""
 	"""
-	# return a SAX XMLReader objec
+	# implement own content handler
+	contentHandler = WikiContentHandler()
+	
+	# get a SAX XMLReader object
 	parser = xml.sax.make_parser()
-	pass
+
+	# use above content handler instead of default
+	parser.setContentHandler(contentHandler)
+
+	# create a SAX parser and use it to parse a document
+	parser.parse(xmlFile)
 
 
 def index(xmlFile, outputFile):
@@ -26,9 +34,13 @@ def index(xmlFile, outputFile):
 	1. parse
 	2. index
 	"""
+	parser(xmlFile)
 	pass
 
 if __name__ == '__main__':
 	if len(sys.argv) < 3:
-		print "Usage: bash index.sh <path-to-wiki-dump> <path-to-invertedindex (outputfile)>"
+		print """ USAGE: bash index.sh <path-to-wiki-dump> 
+			<path-to-invertedindex (outputfile)> """
 		sys.exit(1)
+
+	index(sys.argv[1], sys.argv[2])
