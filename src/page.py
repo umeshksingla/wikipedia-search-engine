@@ -20,6 +20,13 @@ class Page():
 		self.text = ""
 		self.lineNo = n
 
+		self.wikitext = None
+		self.titles = None
+		self.references = None
+		self.categories = None
+		self.links = None
+		self.infobox = None
+
 	def setTitle(self, title):
 		self.title = title
 
