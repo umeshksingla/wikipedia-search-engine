@@ -31,7 +31,7 @@ def highLevelParser(page):
 		'pageId': page.id,
 		'fields': { 't': [], 'h': [], 'b': [], 'i': [], 'c': [], 'r': [], 'l': []}
 		}
-	
+
 	word_list['fields']['t'] = tokenize(page.title, True)
 	word_list['fields']['h'] = tokenize(page.titles, True)
 	
@@ -67,7 +67,7 @@ def parser(parsedPagesQueue, processedPagesQueue):
 	"""
 	"""
 	global parsedpages, processedpages
-	
+
 	parsedPagesQueue = parsedPagesQueue
 	processedPagesQueue = processedPagesQueue
 
@@ -75,7 +75,7 @@ def parser(parsedPagesQueue, processedPagesQueue):
 
 	pool = []
 	pool.append(threadProcess)
-	
+
 	threadProcess.start()
 
 	while any(threadProcess.is_alive() for threadProcess in pool):
