@@ -21,7 +21,7 @@ StopWords = ['is', 'when', 'i', 'www', 'for', 'what',
 	'a', 'be', 'who', 'about']
 
 
-def tokenize(text):
+def tokenize(text, title):
 	
 	# remove punctuation marks from the string
 	regex = re.compile('[%s]' % re.escape(string.punctuation))
@@ -34,7 +34,8 @@ def tokenize(text):
 	# remove the empty strings, if any
 	word_list = filter(None, word_list)
 
-	# remove the stopwords, if any
-	word_list = filter(lambda x: x not in StopWords, word_list)
+	# remove the stopwords from normal text and not title, if any
+	if title:
+		word_list = filter(lambda x: x not in StopWords, word_list)
 
 	return word_list
