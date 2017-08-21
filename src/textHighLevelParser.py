@@ -16,8 +16,8 @@ from multiprocessing import Process, Value
 
 import time
 
-parsedPagesQueue = None
-processedPagesQueue = None
+pages_parse_sequence = None
+pages_retrieve_sequence = None
 count = Value('i', 0)
 
 
@@ -44,46 +44,46 @@ def highLevelParser(page):
 	return word_list
 
 
-def jobs(parsedPagesQueue, processedPagesQueue, count):
+def jobs(pages_parse_sequence, pages_retrieve_sequence, count):
 	"""
 	"""
 	while True:
 		# retrive a page
-		page = parsedPagesQueue.get()
+		page = pages_parse_sequence.get()
 
 		if page == "finished":
-			parsedPagesQueue.task_done()
+			pages_parse_sequence.task_done()
 			return
 
 		text = highLevelParser(page)
-		processedPagesQueue.put(text)
+		pages_retrieve_sequence.put(text)
 
 		# increment the count of pages
 		count.value += 1
-		parsedPagesQueue.task_done()
+		pages_parse_sequence.task_done()
 
 
-def parser(parsedPagesQueue, processedPagesQueue):
+def parser(pages_parse_sequence, pages_retrieve_sequence):
 	"""
 	"""
-	global parsedpages, processedpages
+	global pages_parse_sequence, pages_retrieve_sequence
 
-	parsedPagesQueue = parsedPagesQueue
-	processedPagesQueue = processedPagesQueue
+	pages_parse_sequence = pages_parse_sequence
+	pages_retrieve_sequence = pages_retrieve_sequence
 
-	threadProcess = Process(target=jobs, args=(parsedPagesQueue, processedPagesQueue, count))
+	th = Process(target=jobs, args=(pages_parse_sequence, pages_retrieve_sequence, count))
 
 	pool = []
-	pool.append(threadProcess)
+	pool.append(th)
 
-	threadProcess.start()
+	th.start()
 
-	while any(threadProcess.is_alive() for threadProcess in pool):
+	while any(th.is_alive() for th in pool):
 		time.sleep(.1)
 
-	for threadProcess in pool:
-		threadProcess.join()
+	for th in pool:
+		th.join()
 
-	processedPagesQueue.put("finished")
-	processedPagesQueue.close()
-	processedPagesQueue.join()
+	pages_retrieve_sequence.put("finished")
+	pages_retrieve_sequence.close()
+	pages_retrieve_sequence.join()
