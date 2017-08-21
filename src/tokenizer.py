@@ -23,19 +23,26 @@ StopWords = ['is', 'when', 'i', 'www', 'for', 'what',
 
 def tokenize(text, title):
 	
-	# remove punctuation marks from the string
-	regex = re.compile('[%s]' % re.escape(string.punctuation))
-	word_list = regex.sub('', text)
+	# remove punctuation marks from the string and put space
+	regex = re.compile(r'[\\\/\{\}\(\)\<\>\:\!\?\;\|\=\*\&\$\#\@\^\-\+\×\%\.\,\"“”″•֊‐‑‒–—―⸺⸻〜﹘﹣－−__]')
+	word_list = re.sub(regex, '', text)
+
+	# regex to replace by empty string
+	regex = re.compile(r'[\'\`′‘’\[\]]')
+	word_list = re.sub(regex, '', word_list)
 
 	# remove all the whitespaces and split on it
-	regex = re.compile('[%s]' % re.escape(' '))
-	word_list = regex.split(word_list)
+	word_list = word_list.split()
 
 	# remove the empty strings, if any
 	word_list = filter(None, word_list)
 
 	# remove the stopwords from normal text and not title, if any
-	if title:
-		word_list = filter(lambda x: x not in StopWords, word_list)
+	if not title:
+		word_list = filter(lambda x: x and x not in StopWords, word_list)
+
+	stemmer = PorterStemmer()
+
+	#word_list = map(lambda x: stemmer.stem(x), word_list)
 
 	return word_list
