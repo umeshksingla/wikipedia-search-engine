@@ -63,13 +63,13 @@ def jobs(pages_parse_sequence, pages_retrieve_sequence, count):
 		pages_parse_sequence.task_done()
 
 
-def parser(pages_parse_sequence, pages_retrieve_sequence):
+def parser(parsedPagesQueue, processedPagesQueue):
 	"""
 	"""
 	global pages_parse_sequence, pages_retrieve_sequence
 
-	pages_parse_sequence = pages_parse_sequence
-	pages_retrieve_sequence = pages_retrieve_sequence
+	pages_parse_sequence = parsedPagesQueue
+	pages_retrieve_sequence = processedPagesQueue
 
 	th = Process(target=jobs, args=(pages_parse_sequence, pages_retrieve_sequence, count))
 
