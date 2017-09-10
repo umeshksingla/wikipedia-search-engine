@@ -44,7 +44,7 @@ def highLevelParser(page):
 	return word_list
 
 
-def jobs(pages_parse_sequence, pages_retrieve_sequence, count):
+def jobs(pages_parse_sequence, pages_retrieve_sequence):
 	"""
 	"""
 	while True:
@@ -71,7 +71,7 @@ def parser(parsedPagesQueue, processedPagesQueue):
 	pages_parse_sequence = parsedPagesQueue
 	pages_retrieve_sequence = processedPagesQueue
 
-	th = Process(target=jobs, args=(pages_parse_sequence, pages_retrieve_sequence, count))
+	th = Process(target=jobs, args=(pages_parse_sequence, pages_retrieve_sequence))
 
 	pool = []
 	pool.append(th)

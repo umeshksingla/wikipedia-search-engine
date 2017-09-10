@@ -12,6 +12,7 @@
 import contentHandler as content_p
 import textHighLevelParser as retrieve_p
 
+import combiner as cmb
 import codecs
 import sys
 import os
@@ -62,11 +63,17 @@ class PageIndex:
 
 		# when so many files created
 		if self.pages >= 500000:
-			self.writeToFile(self.getfile())
-			self.index = {}
-			self.pages = 0
+			self.writeToFile1()
 
-	def writeToFile(self, fname):
+	def writeToFile1(self):
+		"""
+		"""
+		self.writeToFile2(self.getfile())
+
+		self.index = {}
+		self.pages = 0
+
+	def writeToFile2(self, fname):
 		"""
 		"""
 		d = codecs.open(fname, "w", "utf-8")
@@ -85,10 +92,23 @@ class PageIndex:
 			for p in pages:
 				c = str(self.index[w][p])
 				d.write(str(p) + "_" + c + ",")
+
 			d.write('\n')
 			del self.index[w]
 
 		d.close()
+
+	def combineFiles(self, fm):
+		"""
+		temporarily combining files
+		"""
+		if len(fm) <= 1:
+			return
+		c = cmb.MergeFilesTool(self.getfile())
+		for f in fm:
+			c.appendFile(f)
+		c.combine()
+		del c
 
 	def finishIndexing(self):
 		"""
@@ -96,10 +116,24 @@ class PageIndex:
 		fm = []
 		c = 0
 
-		self.writeToFile(self.getfile())
+		self.writeToFile2(self.getfile())
 
 		self.index = {}
 		self.pages = 0
+
+		while True:
+			if c >= self.fileNo:
+				break
+
+			fm.append(self.getfile(c))
+
+			if len(fm) >= 4:
+				self.combineFiles(fm)
+				fm = []
+			c += 1
+
+		# combine the remaining files now
+		self.combineFiles(fm)
 
 
 def jobs(pages_retrieve_sequence, outputFile):
