@@ -65,7 +65,7 @@ def processTerm(term):
 		if field in fields:
 			field_abb = fields[field]
 			term = term.split(':')[1]
-
+	print term
 	# remove punctuation, numbers, spaces etc.
 	tokens = tokenize(term, False)
 
@@ -84,7 +84,7 @@ class aSearchResult():
 	"""
 	A potential search result candidate
 	"""
-	def __init__(self, arg):
+	def __init__(self):
 		self.present = 0
 		self.score = 0
 		self.titleScore = 0.0
@@ -100,17 +100,14 @@ class aSearchResult():
 
 	def setTitle(self, title):
 		self.title = title
-		titleTokens = tokenize(title)
+		titleTokens = tokenize(title, True)
 		negCharsReg = re.compile(ur'[.\/\\\|:\.]')
 		negChars = len(re.findall(negCharsReg, title)) + 1
 		if titleTokens:
-			self.titleScore = (1.0/len(titleTokens))
-				+ (1.0/negChars)
+			self.titleScore = (1.0/len(titleTokens)) + (1.0/negChars)
 
 	def getFinalScore(self):
-		return self.present
-			+ self.titleScore
-			+ math.log10(self.score)
+		return self.present + self.titleScore + math.log10(self.score)
 
 
 def process(postings):
@@ -164,22 +161,26 @@ def search(terms):
 	"""
 	"""
 	s = datetime.datetime.now()
+	
 	allTerms = []
 	for each in terms:
 		allTerms.extend(processTerm(each))
+	
 	postings = {}
 	for each in allTerms:
 		postings[each] = indexed.getPosting(each)
+
 	results = process(postings)
 	results = sorted(results.items(),
 					 key=finalScore,
 					 reverse=True)
+
 	e = datetime.datetime.now()
 
 	response = {}
 	response['time'] = (e - s).total_seconds()
 	response['pages'] = []
-	serveSize = min(size(results), 25)
+	serveSize = min(len(results), 25)
 	for i in xrange(serveSize):
 		r = (results[i][0],
 			results[i][1].getTitle(),

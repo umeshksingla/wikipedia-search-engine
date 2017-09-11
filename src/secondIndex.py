@@ -13,11 +13,13 @@ import cPickle
 import sys
 
 secondIndex = []
+
 def secondIndex(primaryIndexFile, secIndexFile):
 	"""
 	"""
 	position = 0
 	infile = open(primaryIndexFile, "r")
+	secondIndex = []
 
 	for i, line in enumerate(infile):
 		l = line[:line.rfind(':')]
@@ -29,14 +31,14 @@ def secondIndex(primaryIndexFile, secIndexFile):
 
 	infile.close()
 
-	with open(secondIndex, "wb") as outFile:
+	with open(secIndexFile, "wb") as outFile:
 		cPickle.dump(len(secondIndex), outFile, 2)
 		for each in secondIndex:
 			cPickle.dump(each, outFile, 2)
 
 
-if __main__ == '__main__':
+if __name__ == '__main__':
 	if len(sys.argv) < 3:
 		sys.stderr.write("Usage: python secondIndex.py <primaryIndexFile> secondIndex\n")
 		exit(1)
-	secondIndex(argv[1], argv[2])
+	secondIndex(sys.argv[1], sys.argv[2])

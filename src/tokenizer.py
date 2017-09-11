@@ -40,13 +40,12 @@ StopWords = {'all': 1, 'whys': 1, 'being': 1, 'over': 1, 'isnt': 1,
 	'same': 1, 'any': 1, 'how': 1, 'other': 1, 'which': 1, 'shell': 1,
 	'shouldnt': 1, 'our': 1, 'after': 1, 'most': 1, 'such': 1, 'why': 1,
 	'wheres': 1, 'hows': 1, 'off': 1, 'i': 1, 'youre': 1, 'well': 1, 'www': 1,
-	'yours': 1, 'their': 1, 'so': 1, 'the': 1, 'having': 1, 'once': 1}
+	'yours': 1, 'their': 1, 'so': 1, 'the': 1, 'having': 1, 'once': 1, 'a': 1}
 
 def tokenize(text, title):
 	"""
 	Tokenizer as a util
 	"""
-	text = text.lower()
 	
 	# remove punctuation marks from the string and put space
 	punct = r'[\\\/\{\}\(\)\<\>\:\!\?\;\|\=\*\&\$\#\@\^\-\+\×\%\.\,\"“”″•֊‐‑‒–—―⸺⸻〜﹘﹣－−__]'
@@ -58,7 +57,7 @@ def tokenize(text, title):
 	word_list = re.sub(regex, '', word_list)
 
 	# regex to replace numbers by empty string
-	word_list = re.sub(r'\d+', '', word_list)
+	# word_list = re.sub(r'\d+', '', word_list)
 
 	# remove all the whitespaces and split on it
 	word_list = word_list.split()

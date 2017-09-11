@@ -12,10 +12,10 @@
 import cPickle
 import sys
 
-synonymIndex = {}
+synIndex = {}
 wordIndex = {}
 
-def synonymIndex(secIndexFile, out):
+def synonymIndex(secIndexFile, outsynIndexFile):
 	"""
 	input file is a secondary-indexed file
 	"""
@@ -23,6 +23,7 @@ def synonymIndex(secIndexFile, out):
 		size = cPickle.load(secIndex)
 		for i in xrange(size):
 			posting = cPickle.load(secIndex)
+			#print posting
 			low = posting[0].lower()
 			if low not in wordIndex:
 				wordIndex[low] = []
@@ -30,14 +31,14 @@ def synonymIndex(secIndexFile, out):
 
 	for word in wordIndex:
 		if len(wordIndex[word]) > 1:
-			synonymIndex[word] = wordIndex[word]
+			synIndex[word] = wordIndex[word]
 
 	with open(outsynIndexFile, "wb") as outsynIndex:
-		cPickle.dump(synonymIndex, outsynIndex, 2)
+		cPickle.dump(synIndex, outsynIndex, 2)
 
 
 if __name__ == '__main__':
 	if len(sys.argv) < 3:
 		sys.stderr.write("Usage: python synonymIndex.py <secIndexFile> synonymIndex\n")
 		exit(1)
-	synonymIndex(argv[1], argv[2])
+	synonymIndex(sys.argv[1], sys.argv[2])
