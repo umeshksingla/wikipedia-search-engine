@@ -49,16 +49,16 @@ def tokenize(text, title):
 	text = text.lower()
 	
 	# remove punctuation marks from the string and put space
-	punct = r'[\\\/\{\}\(\)\<\>\:\!\?\;\|\=\*\&\$\#\@\^\-\—\+\×\%\.\,\"“”″•֊‐‑‒–—―⸺⸻〜﹘﹣－−__]'
+	punct = r'[\\\/\{\}\(\)\<\>\:\!\?\;\|\=\*\&\$\#\@\^\-\+\×\%\.\,\"“”″•֊‐‑‒–—―⸺⸻〜﹘﹣－−__]'
 	regex = re.compile(punct)
 	word_list = re.sub(regex, ' ', text)
 
 	# regex to replace by empty string
-	regex = re.compile(r'[\'\`\"“”′‘’\[\]]')
+	regex = re.compile(r'[\'\`′‘’\[\]]')
 	word_list = re.sub(regex, '', word_list)
 
 	# regex to replace numbers by empty string
-	word_list = re.sub("\d+", "", word_list)
+	word_list = re.sub(r'\d+', '', word_list)
 
 	# remove all the whitespaces and split on it
 	word_list = word_list.split()

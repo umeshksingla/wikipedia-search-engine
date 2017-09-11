@@ -3,7 +3,7 @@
 
 '''
 	File name: indexer.py
-	File description:
+	File description: Controller for indexing jobs and managing index files.
 	Author: Umesh Singla
 	Date created: Aug 21, 2017
 	Python Version: 2.7
