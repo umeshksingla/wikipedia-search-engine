@@ -38,6 +38,6 @@ def synonymIndex(secIndexFile, out):
 
 if __name__ == '__main__':
 	if len(sys.argv) < 3:
-		sys.stderr.write("Usage: python synonymIndex.py <secIndexFile> <outsynIndexFile>")
+		sys.stderr.write("Usage: python synonymIndex.py <secIndexFile> synonymIndex\n")
 		exit(1)
 	synonymIndex(argv[1], argv[2])

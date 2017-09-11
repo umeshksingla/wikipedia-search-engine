@@ -11,11 +11,11 @@
 
 import search
 
-def serve(outputFile):
+def serve(indexDir):
 	"""
 	Serve the interface for searching a given query
 	"""
-	search.initialize(outputFile)
+	search.initialize(indexDir)
 
 	while True:
 		query = raw_input()

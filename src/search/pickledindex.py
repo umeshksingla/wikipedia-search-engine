@@ -132,6 +132,3 @@ class Index():
 		"""
 		"""
 		return os.path.abspath(self.indexDir) + '/' + f
-
-
-

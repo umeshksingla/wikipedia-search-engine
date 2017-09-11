@@ -80,7 +80,6 @@ class WikiContentHandler(xml.sax.handler.ContentHandler):
 			lastTag = self.elements[-1]
 			if lastTag == "page":
 				# use the id of the page as the currentPage's id
-				# print "p", self.content
 				self.currentPage.setId(self.content)
 
 	def characters(self, content):
