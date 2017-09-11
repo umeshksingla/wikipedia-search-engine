@@ -1,1 +1,1 @@
-preprocessorPoolSize = 5
+preprocessorPoolSize = 10
