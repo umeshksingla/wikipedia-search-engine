@@ -13,6 +13,7 @@ import contentHandler as content_p
 import textHighLevelParser as retrieve_p
 
 import combiner as cmb
+import variables
 import codecs
 import sys
 import os
@@ -162,13 +163,16 @@ def index(xmlFile, outputFile):
 	if not os.path.exists(outputFile):
 		os.makedirs(outputFile)
 
+	preprocessorCount = variables.preprocessorPoolSize
+
 	pages_parse_sequence = JoinableQueue(15)
 	pages_retrieve_sequence = JoinableQueue(10000)
 
 	content_pr = Process(target=content_p.parser, args=(xmlFile, pages_parse_sequence))
 	content_pr.start()
 
-	retrieve_pr = Process(target=retrieve_p.parser, args=(pages_parse_sequence, pages_retrieve_sequence))
+	retrieve_pr = Process(target=retrieve_p.parser, args=(pages_parse_sequence, pages_retrieve_sequence,
+						  preprocessorCount))
 	retrieve_pr.start()
 
 	index_pr = Process(target=jobs, args=(pages_retrieve_sequence, outputFile))

@@ -9,6 +9,7 @@
 '''
 
 import xml.sax
+import variables
 from page import Page
 
 class WikiContentHandler(xml.sax.handler.ContentHandler):
@@ -41,7 +42,8 @@ class WikiContentHandler(xml.sax.handler.ContentHandler):
 		at the end of docoument, send the pages to pre-process
 		"""
 		# add a keyword 'finished' at the end of a queue
-		self.pagesQueue.put("finished")
+		for i in xrange(variables.preprocessorPoolSize):
+			self.pagesQueue.put("finished")
 		self.pagesQueue.close()
 
 		# join the parent process
