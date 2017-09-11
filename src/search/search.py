@@ -65,7 +65,6 @@ def processTerm(term):
 		if field in fields:
 			field_abb = fields[field]
 			term = term.split(':')[1]
-	print term
 	# remove punctuation, numbers, spaces etc.
 	tokens = tokenize(term, False)
 
@@ -77,6 +76,7 @@ def processTerm(term):
 	else:
 		for each in tokens:
 			search_terms = appendAppropriate(each)
+	print search_terms
 	return search_terms
 
 
