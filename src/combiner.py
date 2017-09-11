@@ -11,6 +11,7 @@
 
 from collections import deque
 import codecs
+import os
 
 class MergeFilesTool():
 	"""
@@ -19,7 +20,7 @@ class MergeFilesTool():
 
 		self.outputFile = codecs.open(outputFile, "w", "utf-8")
 
-		self.filesList = []
+		self.fileslist = []
 		self.blocks = []
 
 		self.mergedBlocks = []
@@ -52,7 +53,7 @@ class MergeFilesTool():
 	def appendFile(self, f):
 		"""
 		"""
-		self.filesList.append(codecs.open(f, "r", "utf-8"))
+		self.fileslist.append(codecs.open(f, "r", "utf-8"))
 		self.blocks.append(deque([]))
 
 	def next(self, n):
@@ -116,5 +117,13 @@ class MergeFilesTool():
 			self.loadNext()
 		self.writeToFile()
 
-		for f in self.filesList:
+		for f in self.fileslist:
 			f.close()
+			os.remove(f)
+
+if __name__ == '__main__':
+	m = MergeFilesTool('merged')
+	m.appendFile('../rough/index0')
+	m.appendFile('../rough/index1')
+	m.appendFile('../rough/index2')
+	m.combine()

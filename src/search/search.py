@@ -123,19 +123,21 @@ def process(postings):
 		if not p:
 			continue
 		if len(p) > 10*MAX:
-			intersect.append(p)
+			intersect.append((len(p), p))
 			continue
 		for page in p:
 			if page not in resultPages:
 				resultPages[page] = aSearchResult()
 				title = indexed.getTitle(int(page))
 				resultPages[page].setTitle(title)
+			# idf
 			resultPages[page].increment()
+			# add to tf
 			resultPages[page].addWeight(p[page])
 	
-	intersect.sort(key=len)
+	intersect.sort(key=lambda x: x[0])
 
-	for p in intersect:
+	for l, p in intersect:
 		# 'each' is postings of each term
 		if len(resultPages) < 100:
 			for page in p:

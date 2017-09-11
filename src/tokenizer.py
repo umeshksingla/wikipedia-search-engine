@@ -42,6 +42,7 @@ StopWords = {'all': 1, 'whys': 1, 'being': 1, 'over': 1, 'isnt': 1,
 	'wheres': 1, 'hows': 1, 'off': 1, 'i': 1, 'youre': 1, 'well': 1, 'www': 1,
 	'yours': 1, 'their': 1, 'so': 1, 'the': 1, 'having': 1, 'once': 1, 'a': 1}
 
+
 def tokenize(text, title):
 	"""
 	Tokenizer as a util

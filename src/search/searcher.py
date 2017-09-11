@@ -27,7 +27,7 @@ def serve(indexDir):
 			result = search.search(terms)
 			print "\033[0;36m" + "Results showed in", result["time"], "seconds" + "\033[0m"
 			for page in result["pages"]:
-				print "\033[0;32m" + page[1] + "\033[0;0m", '(' + page[0] + ')'
+				print "\033[0;32m" + page[1] + "\033[0;0m", '(' + page[0] + ')', ' Score: ' + str(page[2])
 		else:
 			print "Search field can not be empty"
 		print '\n'
