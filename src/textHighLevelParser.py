@@ -44,7 +44,7 @@ def highLevelParser(page):
 	return word_list
 
 
-def jobs(pages_parse_sequence, pages_retrieve_sequence):
+def jobs(pages_parse_sequence, pages_retrieve_sequence, count):
 	"""
 	"""
 	while True:
@@ -63,7 +63,7 @@ def jobs(pages_parse_sequence, pages_retrieve_sequence):
 		pages_parse_sequence.task_done()
 
 
-def parser(parsedPagesQueue, processedPagesQueue):
+def parser(parsedPagesQueue, processedPagesQueue, preprocessorCount):
 	"""
 	"""
 	global pages_parse_sequence, pages_retrieve_sequence
@@ -71,12 +71,13 @@ def parser(parsedPagesQueue, processedPagesQueue):
 	pages_parse_sequence = parsedPagesQueue
 	pages_retrieve_sequence = processedPagesQueue
 
-	th = Process(target=jobs, args=(pages_parse_sequence, pages_retrieve_sequence))
-
 	pool = []
-	pool.append(th)
-
-	th.start()
+	for i in xrange(preprocessorCount):
+		th = Process(target=jobs,
+			args=(pages_parse_sequence, pages_retrieve_sequence, count),
+			name="retrievalLowLevelParserWorker")
+		pool.append(th)
+		th.start()
 
 	while any(th.is_alive() for th in pool):
 		time.sleep(.1)

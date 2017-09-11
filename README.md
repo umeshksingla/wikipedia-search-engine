@@ -6,6 +6,8 @@ Run:
 .. code:: bash
     bash index.sh <path-to-wiki-xml-dump> <output index directory>
 
+If some problem occurs, try to execute the sequence of commands given in index.sh
+
 field queries supported: 'title', 'heading', 'ref', 'category', 'link', 'info', 'body'
 Example: "title:Apple body:america"
 
