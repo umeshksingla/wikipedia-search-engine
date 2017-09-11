@@ -9,9 +9,12 @@
 	Python Version: 2.7
 '''
 
+from bisect import bisect_left
+
 import cPickle
 import array
 import os
+
 
 class Index():
 	"""
@@ -29,6 +32,76 @@ class Index():
 		self.initialIndexFile = open(openFile("initialIndex"), "r")
 		self.titlesIndexFile = open(openFile("titlesIndex"), "r")
 		self.getSecondaryIndex()
+
+	def getTitle(self, pageId):
+		"""
+		retrieves the title from a pageId
+		"""
+		i = bisect_left(self.pageList, pageId)
+		position = None
+
+		if i != len(self.pageList) and self.pageList[i] == pageId:
+			position = self.titlePos[i]
+
+		if position is None:
+			return None
+
+		# Go to that position in titles indexed file and take one line
+		self.titlesIndexFile.seek(position)
+		line = self.titlesIndexFile.readline()
+		title = line.split(':', 1)[1]
+		return unicode(title, 'utf-8').strip()
+
+	def getSynonyms(self, word):
+		"""
+		"""
+		if word in self.synonymIndex:
+			return self.synonymIndex[word]
+		else:
+			return [word]
+
+	def getPosition(self, word):
+		"""
+		"""
+		i = bisect_left(self.wordIndex, word)
+		if i != len(self.wordIndex) and self.wordIndex == word:
+			return i
+		else:
+			return None
+
+	def getCount(self, word):
+		"""
+		"""
+		synonymns = self.getSynonyms(word)
+		count = 0
+		for each in synonymns:
+			position = self.getPosition(each)
+			if position:
+				count += self.freqIndex[position]
+		return count
+
+	def getPosting(self, word):
+		"""
+		"""
+		postings = {}
+		synonymns = self.getSynonyms(word)
+		for each in synonymns:
+			position = self.getPosition(each)
+			if position is None:
+				continue
+			else:
+				count += self.freqIndex[position]
+				self.initialIndexFile.seek(self.posIndex[position])
+				line = self.initialIndexFile.readline()
+				line = unicode(line.strip(), 'utf-8')
+				line = line.split(':')[1][:-1].split(',')
+				for page in line:
+					page = page.rsplit('_', 1)
+					if page[0] not in postings:
+						postings[page[0]] = 0
+					else:
+						postings[page[0]] += int(page[1])
+		return postings
 
 	def getSecondaryIndex():
 		"""

@@ -88,7 +88,7 @@ class aSearchResult():
 		self.score = 0
 		self.titleScore = 0.0
 
-	def addScore(self, s):
+	def addWeight(self, s):
 		self.score += s
 
 	def increment(self):
@@ -130,9 +130,10 @@ def process(postings):
 		for page in p:
 			if page not in resultPages:
 				resultPages[page] = aSearchResult()
-				resultPages[page].setTitle(indexed.getTitle(int(page)))
+				title = indexed.getTitle(int(page))
+				resultPages[page].setTitle(title)
 			resultPages[page].increment()
-			resultPages[page].addScore(p[page])
+			resultPages[page].addWeight(p[page])
 	
 	intersect.sort(key=len)
 
@@ -142,14 +143,15 @@ def process(postings):
 			for page in p:
 				if page not in resultPages:
 					resultPages[page] = aSearchResult()
-					resultPages[page].setTitle(indexed.getTitle(int(page)))
+					title = indexed.getTitle(int(page))
+					resultPages[page].setTitle(title)
 				resultPages[page].increment()
-				resultPages[page].addScore(p[page])
+				resultPages[page].addWeight(p[page])
 		else:
 			for page in p:
 				if page in resultPages:
 					resultPages[page].increment()
-					resultPages[page].addScore(p[page])
+					resultPages[page].addWeight(p[page])
 	return resultPages
 
 
