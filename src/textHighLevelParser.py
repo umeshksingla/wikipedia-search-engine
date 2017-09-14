@@ -13,8 +13,9 @@ from tokenizer import tokenize
 from textLowLevelParser import parseWikipediaText
 
 from multiprocessing import Process, Value
-
+import Stemmer
 import time
+
 
 pages_parse_sequence = None
 pages_retrieve_sequence = None
@@ -24,6 +25,7 @@ count = Value('i', 0)
 def highLevelParser(page):
 	"""
 	"""
+	stemmer = Stemmer.Stemmer('english')
 	page.wikitext, page.titles, page.references, page.categories,\
 		page.links, page.infobox = parseWikipediaText(page.text)
 	
@@ -32,7 +34,7 @@ def highLevelParser(page):
 		'fields': { 't': [], 'h': [], 'b': [], 'i': [], 'c': [], 'r': [], 'l': []}
 		}
 
-	word_list['fields']['t'] = tokenize(page.title, True)
+	word_list['fields']['t'] = tokenize((page.title).lower(), True)
 	word_list['fields']['h'] = tokenize(page.titles, True)
 	
 	word_list['fields']['b'] = tokenize(page.wikitext, False)

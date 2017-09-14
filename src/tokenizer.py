@@ -11,7 +11,8 @@
 
 import string
 import re
-from nltk import PorterStemmer
+#from nltk import PorterStemmer
+import Stemmer
 
 StopWords = {'all': 1, 'whys': 1, 'being': 1, 'over': 1, 'isnt': 1,
 	'through': 1, 'yourselves': 1, 'hell': 1, 'its': 1, 'before': 1,
@@ -66,12 +67,10 @@ def tokenize(text, title):
 	# remove the empty strings, if any
 	word_list = filter(None, word_list)
 
+	stemmer = Stemmer.Stemmer('english')
+
 	# remove the stopwords from normal text and not title
 	if not title:
 		word_list = filter(lambda x: x and x not in StopWords, word_list)
-
-	stemmer = PorterStemmer()
-
-	#word_list = map(lambda x: stemmer.stem(x), word_list)
-
+	# word_list = map(lambda x: stemmer.stemWord(x), word_list)
 	return word_list

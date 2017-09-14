@@ -28,6 +28,15 @@ fields = {
     'body': '_b'
 }
 
+field_weights = {
+    't': 6,
+    'h': 5,
+    'r': 4,
+    'c': 3,
+    'l': 2,
+    'i': 1
+}
+
 def initialize(outputFile):
 	"""
 	Loads the index into memory
@@ -66,7 +75,12 @@ def processTerm(term):
 			field_abb = fields[field]
 			term = term.split(':')[1]
 	# remove punctuation, numbers, spaces etc.
-	tokens = tokenize(term, False)
+	print term
+	if field_abb == "_t" or field_abb == "_h":
+		tokens = tokenize(term, True)
+	else:
+		tokens = tokenize(term, False)
+	print tokens
 
 	# if field is mentioned exclusively in query (ofc, except body),
 	# append _t/_h/_r etc. and search.
@@ -139,7 +153,7 @@ def process(postings):
 
 	for l, p in intersect:
 		# 'each' is postings of each term
-		if len(resultPages) < 100:
+		if len(resultPages) < 10*MAX:
 			for page in p:
 				if page not in resultPages:
 					resultPages[page] = aSearchResult()

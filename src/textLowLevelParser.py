@@ -14,7 +14,7 @@ import HTMLParser
 
 # TODO: try to avoid global variables
 infoboxContent = ''
-
+html_parser = None
 
 def replaceFunction(matchObj):
 	"""
@@ -199,12 +199,20 @@ def parseText(text):
 	return text
 
 
+def html_decode(text):
+	"""
+	"""
+	global html_parser
+	if not html_parser:
+		html_parser = HTMLParser.HTMLParser()
+	return html_parser.unescape(text)
+
+
 def parseWikipediaText(text):
-
-	html_parser = HTMLParser.HTMLParser()
-
+	"""
+	"""
 	# lower case everything in the page
-	text = html_parser.unescape(text).lower()
+	text = html_decode(text).lower()
 
 	# process infobox content
 	text = splitPageContents(text)

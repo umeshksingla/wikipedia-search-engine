@@ -21,6 +21,7 @@ class MergeFilesTool():
 		self.outputFile = codecs.open(outputFile, "w", "utf-8")
 
 		self.fileslist = []
+		self.allfiles = []
 		self.blocks = []
 
 		self.mergedBlocks = []
@@ -53,6 +54,7 @@ class MergeFilesTool():
 	def appendFile(self, f):
 		"""
 		"""
+		self.allfiles.append(f)
 		self.fileslist.append(codecs.open(f, "r", "utf-8"))
 		self.blocks.append(deque([]))
 
@@ -119,7 +121,7 @@ class MergeFilesTool():
 
 		for f in self.fileslist:
 			f.close()
-			os.remove(f)
+
 
 if __name__ == '__main__':
 	m = MergeFilesTool('merged')
